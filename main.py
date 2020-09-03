@@ -1,15 +1,16 @@
-namespace SpriteKind {
-    export const rock = SpriteKind.create()
-    export const spacecraft = SpriteKind.create()
-}
+@namespace
+class SpriteKind:
+    rock = SpriteKind.create()
+    spacecraft = SpriteKind.create()
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap(sprite: Sprite, otherSprite: Sprite) {
+def on_on_overlap(sprite, otherSprite):
     mySprite.destroy()
     game.reset()
-})
-let mySprite2 : Sprite = null
-let mySprite : Sprite = null
-mySprite = sprites.create(img`
+sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap)
+
+mySprite2: Sprite = None
+mySprite: Sprite = None
+mySprite = sprites.create(img("""
         . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -26,15 +27,17 @@ mySprite = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . .
-    `, SpriteKind.Player)
-controller.moveSprite(mySprite)
-scene.setBackgroundColor(10)
-mySprite.setPosition(10, 60)
-mySprite.setFlag(SpriteFlag.StayInScreen, true)
-info.startCountdown(60)
-game.onUpdateInterval(500, function on_update_interval() {
-    
-    mySprite2 = sprites.create(img`
+    """),
+    SpriteKind.player)
+controller.move_sprite(mySprite)
+scene.set_background_color(10)
+mySprite.set_position(10, 60)
+mySprite.set_flag(SpriteFlag.STAY_IN_SCREEN, True)
+info.start_countdown(60)
+
+def on_update_interval():
+    global mySprite2
+    mySprite2 = sprites.create(img("""
             . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
@@ -51,7 +54,8 @@ game.onUpdateInterval(500, function on_update_interval() {
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . .
-        `, SpriteKind.Enemy)
-    mySprite2.setPosition(160, randint(0, scene.screenHeight()))
-    mySprite2.setVelocity(-50, 0)
-})
+        """),
+        SpriteKind.enemy)
+    mySprite2.set_position(160, randint(0, scene.screen_height()))
+    mySprite2.set_velocity(-50, 0)
+game.on_update_interval(500, on_update_interval)
